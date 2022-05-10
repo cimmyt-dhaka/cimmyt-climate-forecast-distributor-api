@@ -12,7 +12,6 @@ module.exports = async (req, res) => {
     const
       isProviderURL = req.path.startsWith("/ivr-provider"),
       date = getDate(),
-      // date = new Date(2022, 2, 20),
       forecasts = await MungbeanForecasts.find({ dateBroadcast: +timeFormat("%y%m%d")(date) });
 
     if (!forecasts.length) return res

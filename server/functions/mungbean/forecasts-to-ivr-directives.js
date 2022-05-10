@@ -24,7 +24,12 @@ const
 module.exports = forecasts => forecasts
   .reduce((acc, el) => {
     const
-      { dateBroadcast: date_ymd, location, rain, skip } = el,
+      { dateBroadcast: date_ymd, location, rain, skip } = el;
+
+    // we're not taking day 5 into consideration anymore, as of May 9, 2022
+    if (rain.length === 5) rain.splice(-1);
+
+    const
       { dis: district, upz: upazila, unn: union, group: t, id: l } = areas
         .find(area => `l${location}` === area.id),
       characterCodes = forecastToCharacterCodes(rain),
