@@ -11,13 +11,13 @@ const
 router.get("/upazila", async (req, res) => {
   try {
     const
-      { date, gid } = req.query,
+      { date, gids } = req.query,
       forecasts = typeof date === "undefined"
         ? []
         : await FAWForecasts.find(
-          typeof gid === "undefined"
+          typeof gids === "undefined"
             ? { date: +date }
-            : { date: +date, gid }
+            : { date: +date, gid: { $in: gids.split(',') } }
         );
 
     if (!forecasts.length) throw new Error("The forecast data is not yet available");
