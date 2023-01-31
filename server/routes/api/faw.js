@@ -20,8 +20,6 @@ router.get("/upazila", async (req, res) => {
             : { date: +date, gid: { $in: gids.split(',') } }
         );
 
-    if (!forecasts.length) throw new Error("The forecast data is not yet available");
-
     res.json(forecasts);
   } catch (err) {
     res.status(500).send(err.message);
