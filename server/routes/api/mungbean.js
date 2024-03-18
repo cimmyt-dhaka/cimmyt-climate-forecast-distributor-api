@@ -36,4 +36,14 @@ router.get("/ivr-provider-v240317", callbackV240317);
 // @access   Public
 router.get("/ivr-developer-v240317", callbackV240317);
 
+// @route    GET /api/mungbean/ivr-provider-v240317
+// @desc     Get forecast based directives of audio file sequences to generate voice calls
+// @access   Public
+router.get("/ivr-provider-euglena-v240317", callbackV240317);
+
+// @route    GET /api/mungbean/ivr-developer-v240317
+// @desc     Get forecast based directives of audio file sequences to generate voice calls
+// @access   Public
+router.get("/ivr-developer-euglena-v240317", callbackV240317);
+
 module.exports = router;

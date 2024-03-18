@@ -24,7 +24,7 @@ const
 module.exports = forecasts => areas
   .reduce((acc, el) => {
     const
-      { dis: district, upz: upazila, unn: union, area_code: l, upz_code } = el,
+      { dis: district, upz: upazila, unn: union, area_code: l, upz_code, euglena } = el,
       { dateBroadcast: date_ymd, rain, skip } = forecasts.find(forecast => forecast.location === upz_code),
 
       characterCodes = forecastToCharacterCodes(rain),
@@ -41,6 +41,7 @@ module.exports = forecasts => areas
           forecastCode: characterCodes,
           directives: generateDirectives({ isIncoming, g, l, characterCodes, dates: rainDates }),
         };
+        if (euglena) returnable.euglena = true;
         if (!isIncoming) returnable.broadcast = !skip;
 
         return returnable;

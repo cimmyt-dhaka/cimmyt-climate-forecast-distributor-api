@@ -11,6 +11,7 @@ module.exports = async (req, res) => {
   try {
     const
       isProviderURL = req.path.startsWith("/ivr-provider"),
+      isEuglenaURL = req.path.includes("euglena"),
       date = getDate(),
       forecasts = await MungbeanForecasts.find({ dateBroadcast: +timeFormat("%y%m%d")(date) });
 
@@ -25,15 +26,12 @@ module.exports = async (req, res) => {
           outgoing: +timeFormat("%Y%m%d")(date),
           incoming: +timeFormat("%Y%m%d")(date)
         },
-        outgoing: isProviderURL ? outgoing.map(el => ({
-          group: el.group,
-          directives: el.directives,
-          broadcast: el.broadcast
-        })) : outgoing,
-        incoming: isProviderURL ? incoming.map(el => ({
-          group: el.group,
-          directives: el.directives
-        })) : incoming
+        outgoing: outgoing
+          .filter(el => isEuglenaURL ? 'euglena' in el && el.euglena : true)
+          .map(el => isProviderURL ? { group: el.group, directives: el.directives, broadcast: el.broadcast } : el),
+        incoming: incoming
+          .filter(el => isEuglenaURL ? 'euglena' in el && el.euglena : true)
+          .map(el => isProviderURL ? { group: el.group, directives: el.directives } : el),
       };
 
     res.json(returnable);
