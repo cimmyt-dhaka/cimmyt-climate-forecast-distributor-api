@@ -20,17 +20,15 @@ module.exports = async (req, res) => {
       .send(`The forecast data for ${ timeFormat("%B %-d, %Y")(date) } is not yet available. Please try again soon.`);
 
     const
-      { outgoing, incoming } = forecastsToIVR(forecasts),
+      { outgoing, incoming } = forecastsToIVR({ forecasts, isEuglenaURL }),
       returnable = {
         dates: {
           outgoing: +timeFormat("%Y%m%d")(date),
           incoming: +timeFormat("%Y%m%d")(date)
         },
         outgoing: outgoing
-          .filter(el => isEuglenaURL ? 'euglena' in el && el.euglena : true)
           .map(el => isProviderURL ? { group: el.group, directives: el.directives, broadcast: el.broadcast } : el),
         incoming: incoming
-          .filter(el => isEuglenaURL ? 'euglena' in el && el.euglena : true)
           .map(el => isProviderURL ? { group: el.group, directives: el.directives } : el),
       };
 

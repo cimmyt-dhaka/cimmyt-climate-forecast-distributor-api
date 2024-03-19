@@ -21,10 +21,12 @@ const
     ));
 
 
-module.exports = forecasts => areas
+module.exports = ({ forecasts, isEuglenaURL }) => areas
   .reduce((acc, el) => {
+    const { dis: district, upz: upazila, unn: union, area_code: l, upz_code, euglena } = el;
+    if (isEuglenaURL && !euglena) return acc;
+
     const
-      { dis: district, upz: upazila, unn: union, area_code: l, upz_code, euglena } = el,
       { dateBroadcast: date_ymd, rain, skip } = forecasts.find(forecast => forecast.location === upz_code),
 
       characterCodes = forecastToCharacterCodes(rain),
@@ -39,9 +41,9 @@ module.exports = forecasts => areas
           union,
           forecast: elForecast.map(day => ({ date: +timeFormat("%Y%m%d")(day.date), rainfall: day.rainfall })),
           forecastCode: characterCodes,
-          directives: generateDirectives({ isIncoming, g, l, characterCodes, dates: rainDates }),
+          directives: generateDirectives({ isEuglenaURL, isIncoming, g, l, characterCodes, dates: rainDates }),
         };
-        if (euglena) returnable.euglena = true;
+
         if (!isIncoming) returnable.broadcast = !skip;
 
         return returnable;

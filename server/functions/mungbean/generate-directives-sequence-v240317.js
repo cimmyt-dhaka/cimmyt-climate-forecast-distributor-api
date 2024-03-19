@@ -1,6 +1,6 @@
 const { timeFormat } = require("d3-time-format");
 
-module.exports = ({ isIncoming, g, l, characterCodes, dates }) => {
+module.exports = ({ isEuglenaURL, isIncoming, g, l, characterCodes, dates }) => {
   let directives = [];
 
   if (isIncoming) {
@@ -9,7 +9,7 @@ module.exports = ({ isIncoming, g, l, characterCodes, dates }) => {
       `ivr1_intro2_bmd_forecast_incoming`
     );
   } else {
-    directives.push(`ivr1_intro_${ g }_${ l }_dae`);
+    directives.push(`ivr1_intro_${ g }_${ l }_${ isEuglenaURL ? 'ge' : 'dae' }`);
   }
 
   directives.push(
@@ -27,7 +27,8 @@ module.exports = ({ isIncoming, g, l, characterCodes, dates }) => {
     if (g === "gf") directives.push(`msg5_adv_b`);
   }
 
-  directives.push("msg6_outro_y24", isIncoming ? "ivr123_thanks" : "msg7_outro");
+  directives.push(isEuglenaURL ? 'msg6_outro_y24_grameen' : 'msg6_outro_y24');
+  directives.push(isEuglenaURL ? 'msg7_outro' : isIncoming ? 'ivr123_thanks' : 'msg7_outro');
 
   return directives;
 };
