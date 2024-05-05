@@ -46,7 +46,16 @@ module.exports = async (req, res) => {
           { location, rain } = forecast._doc,
           area = areas.find(area => area.upz_code === location);
 
-        return { ...area, codes: forecastToCharacterCodes(rain) }
+        return {
+          ...area,
+          d1: rain[0],
+          d2: rain[1],
+          d3: rain[2],
+          d4: rain[3],
+          d5: rain[4],
+          codes: forecastToCharacterCodes(rain),
+          broadcast: !forecast.skip
+        }
       });
 
     res.json(forecastsCodes);
